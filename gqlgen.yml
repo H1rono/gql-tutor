@@ -8,7 +8,7 @@ exec:
   layout: single-file # Only other option is "follow-schema," ie multi-file.
 
   # Only for single-file layout:
-  filename: graph/generated.go
+  filename: internal/graph/generated.go
 
   # Only for follow-schema layout:
   # dir: graph
@@ -19,7 +19,7 @@ exec:
 
 # Uncomment to enable federation
 # federation:
-#   filename: graph/federation.go
+#   filename: internal/graph/federation.go
 #   package: graph
 #   version: 2
 #   options:
@@ -27,7 +27,7 @@ exec:
 
 # Where should any generated models go?
 model:
-  filename: graph/model/models_gen.go
+  filename: internal/graph/model/models_gen.go
   package: model
 
   # Optional: Pass in a path to a new gotpl template to use for generating the models
@@ -39,10 +39,10 @@ resolver:
   layout: follow-schema # Only other option is "single-file."
 
   # Only for single-file layout:
-  # filename: graph/resolver.go
+  # filename: internal/graph/resolver.go
 
   # Only for follow-schema layout:
-  dir: graph
+  dir: internal/graph
   filename_template: "{name}.resolvers.go"
 
   # Optional: turn on to not generate template comments above resolvers
@@ -135,7 +135,7 @@ models:
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
-  # gqlgen provides a default GraphQL UUID convenience wrapper for github.com/google/uuid 
+  # gqlgen provides a default GraphQL UUID convenience wrapper for github.com/google/uuid
   # but you can override this to provide your own GraphQL UUID implementation
   UUID:
     model:
