@@ -8,7 +8,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/h1rono/gql-tutor/graph/model"
+	"github.com/h1rono/gql-tutor/internal/graph/model"
 )
 
 // CreateTodo is the resolver for the createTodo field.
