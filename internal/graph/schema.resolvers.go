@@ -6,19 +6,47 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/h1rono/gql-tutor/internal/graph/model"
 )
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+	todo := &model.Todo{
+		ID:   "1", // This should be replaced with a real ID generation logic
+		Text: input.Text,
+		Done: false, // Default value for new todos
+		User: &model.User{
+			ID:   input.UserID,
+			Name: "User Name", // This should be replaced with a real user fetching logic
+		},
+	}
+	return todo, nil
 }
 
 // Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+	todos := []*model.Todo{
+		{
+			ID:   "1",
+			Text: "First Todo",
+			Done: false,
+			User: &model.User{
+				ID:   "1",
+				Name: "John Doe",
+			},
+		},
+		{
+			ID:   "2",
+			Text: "Second Todo",
+			Done: true,
+			User: &model.User{
+				ID:   "2",
+				Name: "Jane Smith",
+			},
+		},
+	}
+	return todos, nil
 }
 
 // Mutation returns MutationResolver implementation.
