@@ -6,47 +6,29 @@ package graph
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/h1rono/gql-tutor/internal/graph/model"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	todo := &model.Todo{
-		ID:   "1", // This should be replaced with a real ID generation logic
-		Text: input.Text,
-		Done: false, // Default value for new todos
-		User: &model.User{
-			ID:   input.UserID,
-			Name: "User Name", // This should be replaced with a real user fetching logic
-		},
-	}
-	return todo, nil
+// AddProjectV2ItemByID is the resolver for the addProjectV2ItemById field.
+func (r *mutationResolver) AddProjectV2ItemByID(ctx context.Context, input model.AddProjectV2ItemByIDInput) (*model.AddProjectV2ItemByIDPayload, error) {
+	panic(fmt.Errorf("not implemented: AddProjectV2ItemByID - addProjectV2ItemById"))
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	todos := []*model.Todo{
-		{
-			ID:   "1",
-			Text: "First Todo",
-			Done: false,
-			User: &model.User{
-				ID:   "1",
-				Name: "John Doe",
-			},
-		},
-		{
-			ID:   "2",
-			Text: "Second Todo",
-			Done: true,
-			User: &model.User{
-				ID:   "2",
-				Name: "Jane Smith",
-			},
-		},
-	}
-	return todos, nil
+// Repository is the resolver for the repository field.
+func (r *queryResolver) Repository(ctx context.Context, name string, owner string) (*model.Repository, error) {
+	panic(fmt.Errorf("not implemented: Repository - repository"))
+}
+
+// User is the resolver for the user field.
+func (r *queryResolver) User(ctx context.Context, name string) (*model.User, error) {
+	panic(fmt.Errorf("not implemented: User - user"))
+}
+
+// Node is the resolver for the node field.
+func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error) {
+	panic(fmt.Errorf("not implemented: Node - node"))
 }
 
 // Mutation returns MutationResolver implementation.
