@@ -10,6 +10,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/google/uuid"
+	"github.com/h1rono/gql-tutor/internal/ent/repository"
 	"github.com/h1rono/gql-tutor/internal/ent/user"
 )
 
@@ -38,6 +39,21 @@ func (uc *UserCreate) SetNillableID(u *uuid.UUID) *UserCreate {
 		uc.SetID(*u)
 	}
 	return uc
+}
+
+// AddRepositoryIDs adds the "repositories" edge to the Repository entity by IDs.
+func (uc *UserCreate) AddRepositoryIDs(ids ...uuid.UUID) *UserCreate {
+	uc.mutation.AddRepositoryIDs(ids...)
+	return uc
+}
+
+// AddRepositories adds the "repositories" edges to the Repository entity.
+func (uc *UserCreate) AddRepositories(r ...*Repository) *UserCreate {
+	ids := make([]uuid.UUID, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return uc.AddRepositoryIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -129,6 +145,22 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
 		_node.Name = value
+	}
+	if nodes := uc.mutation.RepositoriesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.RepositoriesTable,
+			Columns: []string{user.RepositoriesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(repository.FieldID, field.TypeUUID),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }
