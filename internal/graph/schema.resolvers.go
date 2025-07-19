@@ -23,7 +23,11 @@ func (r *queryResolver) Repository(ctx context.Context, name string, owner strin
 
 // User is the resolver for the user field.
 func (r *queryResolver) User(ctx context.Context, name string) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: User - user"))
+	u, err := r.s.GetUserByName(ctx, name)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get user by name: %w", err)
+	}
+	return model.UserFromService(u), nil
 }
 
 // Node is the resolver for the node field.
