@@ -61,15 +61,11 @@ func loadRepository() (*repository.Repository, error) {
 	return repository.New(client), nil
 }
 
-func main() {
-	repository, err := loadRepository()
-	if err != nil {
-		log.Fatalf("failed to load repository: %v", err)
-	}
-	service := service.NewService(repository)
-
-	resolver := graph.NewResolver(service)
-	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: resolver}))
+func makeQueryHandler(resolver *graph.Resolver, directive graph.DirectiveRoot) *handler.Server {
+	srv := handler.New(graph.NewExecutableSchema(graph.Config{
+		Resolvers:  resolver,
+		Directives: directive,
+	}))
 
 	srv.AddTransport(transport.Options{})
 	srv.AddTransport(transport.GET{})
@@ -81,6 +77,20 @@ func main() {
 	srv.Use(extension.AutomaticPersistedQuery{
 		Cache: lru.New[string](100),
 	})
+
+	return srv
+}
+
+func main() {
+	repository, err := loadRepository()
+	if err != nil {
+		log.Fatalf("failed to load repository: %v", err)
+	}
+	service := service.NewService(repository)
+
+	resolver := graph.NewResolver(service)
+	directive := graph.NewDirective()
+	srv := makeQueryHandler(resolver, directive)
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
