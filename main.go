@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -30,7 +31,7 @@ func getenv(key string) (string, error) {
 	return value, nil
 }
 
-func loadRepository() (*repository.Repository, error) {
+func loadRepository(ctx context.Context) (*repository.Repository, error) {
 	hostname, err := getenv("MYSQL_HOSTNAME")
 	if err != nil {
 		return nil, err
@@ -56,9 +57,12 @@ func loadRepository() (*repository.Repository, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)
 	}
-	// TODO: migration
+	r := repository.New(client)
+	if err := r.MigrateApply(ctx); err != nil {
+		return nil, fmt.Errorf("failed to apply migrations: %w", err)
+	}
 
-	return repository.New(client), nil
+	return r, nil
 }
 
 func makeQueryHandler(resolver *graph.Resolver, directive graph.DirectiveRoot) *handler.Server {
@@ -82,7 +86,8 @@ func makeQueryHandler(resolver *graph.Resolver, directive graph.DirectiveRoot) *
 }
 
 func main() {
-	repository, err := loadRepository()
+	ctx := context.Background()
+	repository, err := loadRepository(ctx)
 	if err != nil {
 		log.Fatalf("failed to load repository: %v", err)
 	}
