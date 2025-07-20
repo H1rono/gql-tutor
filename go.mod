@@ -8,6 +8,7 @@ tool (
 )
 
 require (
+	ariga.io/atlas v0.31.1-0.20250212144724-069be8033e83
 	entgo.io/ent v0.14.4
 	github.com/99designs/gqlgen v0.17.76
 	github.com/go-sql-driver/mysql v1.9.3
@@ -16,7 +17,6 @@ require (
 )
 
 require (
-	ariga.io/atlas v0.31.1-0.20250212144724-069be8033e83 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/agext/levenshtein v1.2.1 // indirect
 	github.com/agnivade/levenshtein v1.2.1 // indirect
