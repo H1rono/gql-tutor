@@ -10,7 +10,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/h1rono/gql-tutor/internal/graph/model"
-	"github.com/h1rono/gql-tutor/internal/service"
 )
 
 // AddProjectV2ItemByID is the resolver for the addProjectV2ItemById field.
@@ -20,11 +19,7 @@ func (r *mutationResolver) AddProjectV2ItemByID(ctx context.Context, input model
 
 // Repository is the resolver for the repository field.
 func (r *queryResolver) Repository(ctx context.Context, name string, owner string) (*model.Repository, error) {
-	ownerID, err := uuid.Parse(owner)
-	if err != nil {
-		return nil, fmt.Errorf("invalid owner ID: %w", err)
-	}
-	repo, err := r.s.GetRepoByName(ctx, service.UserID(ownerID), name)
+	repo, err := r.s.GetRepoByName(ctx, owner, name)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get repository: %w", err)
 	}

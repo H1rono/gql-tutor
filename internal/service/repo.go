@@ -25,5 +25,5 @@ type RepoCore struct {
 
 type RepoRepository interface {
 	GetRepo(ctx context.Context, id RepoID) (*Repo, error)
-	GetRepoByName(ctx context.Context, ownerID UserID, name string) (*Repo, error)
+	GetRepoByName(ctx context.Context, owner string, name string) (*Repo, error)
 }

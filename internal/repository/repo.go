@@ -4,7 +4,9 @@ import (
 	"context"
 
 	"github.com/google/uuid"
+	"github.com/h1rono/gql-tutor/internal/ent"
 	"github.com/h1rono/gql-tutor/internal/ent/repository"
+	"github.com/h1rono/gql-tutor/internal/ent/user"
 	"github.com/h1rono/gql-tutor/internal/service"
 )
 
@@ -29,11 +31,12 @@ func (r *Repository) GetRepo(ctx context.Context, id service.RepoID) (*service.R
 }
 
 func (r *Repository) GetRepoByName(
-	ctx context.Context, ownerID service.UserID, name string,
+	ctx context.Context, ownerName string, name string,
 ) (*service.Repo, error) {
 	repo, err := r.c.Repository.
 		Query().
-		Where(repository.OwnerIDEQ(uuid.UUID(ownerID)), repository.NameEQ(name)).
+		WithOwner(func(q *ent.UserQuery) { q.Where(user.NameEQ(ownerName)) }).
+		Where(repository.NameEQ(name)).
 		Only(ctx)
 	if err != nil {
 		return nil, err
@@ -75,3 +78,5 @@ func (r *Repository) CreateRepo(ctx context.Context, ownerID service.UserID, nam
 		CreatedAt: repo.CreatedAt,
 	}, nil
 }
+
+var _ service.RepoRepository = (*Repository)(nil)

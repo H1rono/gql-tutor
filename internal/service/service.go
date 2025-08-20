@@ -29,6 +29,6 @@ func (s *Service) GetRepo(ctx context.Context, id RepoID) (*Repo, error) {
 	return s.r.GetRepo(ctx, id)
 }
 
-func (s *Service) GetRepoByName(ctx context.Context, owner UserID, name string) (*Repo, error) {
+func (s *Service) GetRepoByName(ctx context.Context, owner string, name string) (*Repo, error) {
 	return s.r.GetRepoByName(ctx, owner, name)
 }
