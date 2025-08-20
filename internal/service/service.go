@@ -3,23 +3,26 @@ package service
 import "context"
 
 type Service struct {
-	u UserRepository
-	r RepoRepository
+	r Repository
 }
 
-func NewService(u UserRepository, r RepoRepository) *Service {
+type Repository interface {
+	UserRepository
+	RepoRepository
+}
+
+func NewService(r Repository) *Service {
 	return &Service{
-		u: u,
 		r: r,
 	}
 }
 
 func (s *Service) GetUser(ctx context.Context, id UserID) (*User, error) {
-	return s.u.GetUser(ctx, id)
+	return s.r.GetUser(ctx, id)
 }
 
 func (s *Service) GetUserByName(ctx context.Context, name string) (*User, error) {
-	return s.u.GetUserByName(ctx, name)
+	return s.r.GetUserByName(ctx, name)
 }
 
 func (s *Service) GetRepo(ctx context.Context, id RepoID) (*Repo, error) {
