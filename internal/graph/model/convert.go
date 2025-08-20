@@ -1,8 +1,6 @@
 package model
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 	"github.com/h1rono/gql-tutor/internal/service"
 )
@@ -25,6 +23,6 @@ func RepoFromService(r *service.Repo) *Repository {
 		ID:        uuid.UUID(r.ID).String(),
 		Name:      r.Name,
 		Owner:     UserFromService(&r.Owner),
-		CreatedAt: r.CreatedAt.Format(time.RFC3339),
+		CreatedAt: r.CreatedAt,
 	}
 }
