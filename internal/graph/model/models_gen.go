@@ -4,11 +4,13 @@ package model
 
 import (
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type Node interface {
 	IsNode()
-	GetID() string
+	GetID() uuid.UUID
 }
 
 type ProjectV2ItemContent interface {
@@ -16,8 +18,8 @@ type ProjectV2ItemContent interface {
 }
 
 type AddProjectV2ItemByIDInput struct {
-	ContentID string `json:"contentId"`
-	ProjectID string `json:"projectId"`
+	ContentID uuid.UUID `json:"contentId"`
+	ProjectID uuid.UUID `json:"projectId"`
 }
 
 type AddProjectV2ItemByIDPayload struct {
@@ -25,7 +27,7 @@ type AddProjectV2ItemByIDPayload struct {
 }
 
 type Issue struct {
-	ID           string                   `json:"id"`
+	ID           uuid.UUID                `json:"id"`
 	URL          string                   `json:"url"`
 	Title        string                   `json:"title"`
 	Closed       bool                     `json:"closed"`
@@ -35,8 +37,8 @@ type Issue struct {
 	ProjectItems *ProjectV2ItemConnection `json:"projectItems"`
 }
 
-func (Issue) IsNode()            {}
-func (this Issue) GetID() string { return this.ID }
+func (Issue) IsNode()               {}
+func (this Issue) GetID() uuid.UUID { return this.ID }
 
 func (Issue) IsProjectV2ItemContent() {}
 
@@ -63,7 +65,7 @@ type PageInfo struct {
 }
 
 type ProjectV2 struct {
-	ID     string                   `json:"id"`
+	ID     uuid.UUID                `json:"id"`
 	Title  string                   `json:"title"`
 	URL    string                   `json:"url"`
 	Number int32                    `json:"number"`
@@ -71,8 +73,8 @@ type ProjectV2 struct {
 	Owner  *User                    `json:"owner"`
 }
 
-func (ProjectV2) IsNode()            {}
-func (this ProjectV2) GetID() string { return this.ID }
+func (ProjectV2) IsNode()               {}
+func (this ProjectV2) GetID() uuid.UUID { return this.ID }
 
 type ProjectV2Connection struct {
 	Edges      []*ProjectV2Edge `json:"edges,omitempty"`
@@ -87,13 +89,13 @@ type ProjectV2Edge struct {
 }
 
 type ProjectV2Item struct {
-	ID      string               `json:"id"`
+	ID      uuid.UUID            `json:"id"`
 	Project *ProjectV2           `json:"project"`
 	Content ProjectV2ItemContent `json:"content,omitempty"`
 }
 
-func (ProjectV2Item) IsNode()            {}
-func (this ProjectV2Item) GetID() string { return this.ID }
+func (ProjectV2Item) IsNode()               {}
+func (this ProjectV2Item) GetID() uuid.UUID { return this.ID }
 
 type ProjectV2ItemConnection struct {
 	Edges      []*ProjectV2ItemEdge `json:"edges,omitempty"`
@@ -108,7 +110,7 @@ type ProjectV2ItemEdge struct {
 }
 
 type PullRequest struct {
-	ID           string                   `json:"id"`
+	ID           uuid.UUID                `json:"id"`
 	BaseRefName  string                   `json:"baseRefName"`
 	Closed       bool                     `json:"closed"`
 	HeadRefName  string                   `json:"headRefName"`
@@ -118,8 +120,8 @@ type PullRequest struct {
 	ProjectItems *ProjectV2ItemConnection `json:"projectItems"`
 }
 
-func (PullRequest) IsNode()            {}
-func (this PullRequest) GetID() string { return this.ID }
+func (PullRequest) IsNode()               {}
+func (this PullRequest) GetID() uuid.UUID { return this.ID }
 
 func (PullRequest) IsProjectV2ItemContent() {}
 
@@ -139,7 +141,7 @@ type Query struct {
 }
 
 type Repository struct {
-	ID           string                 `json:"id"`
+	ID           uuid.UUID              `json:"id"`
 	Owner        *User                  `json:"owner"`
 	Name         string                 `json:"name"`
 	CreatedAt    time.Time              `json:"createdAt"`
@@ -149,15 +151,15 @@ type Repository struct {
 	PullRequests *PullRequestConnection `json:"pullRequests"`
 }
 
-func (Repository) IsNode()            {}
-func (this Repository) GetID() string { return this.ID }
+func (Repository) IsNode()               {}
+func (this Repository) GetID() uuid.UUID { return this.ID }
 
 type User struct {
-	ID         string               `json:"id"`
+	ID         uuid.UUID            `json:"id"`
 	Name       string               `json:"name"`
 	ProjectV2  *ProjectV2           `json:"projectV2,omitempty"`
 	ProjectV2s *ProjectV2Connection `json:"projectV2s"`
 }
 
-func (User) IsNode()            {}
-func (this User) GetID() string { return this.ID }
+func (User) IsNode()               {}
+func (this User) GetID() uuid.UUID { return this.ID }

@@ -10,7 +10,7 @@ func UserFromService(u *service.User) *User {
 		return nil
 	}
 	return &User{
-		ID:   uuid.UUID(u.ID).String(),
+		ID:   uuid.UUID(u.ID),
 		Name: u.Name,
 	}
 }
@@ -20,7 +20,7 @@ func RepoFromService(r *service.Repo) *Repository {
 		return nil
 	}
 	return &Repository{
-		ID:        uuid.UUID(r.ID).String(),
+		ID:        uuid.UUID(r.ID),
 		Name:      r.Name,
 		Owner:     UserFromService(&r.Owner),
 		CreatedAt: r.CreatedAt,
