@@ -11,7 +11,7 @@ type Repository interface {
 	RepoRepository
 }
 
-func NewService(r Repository) *Service {
+func New(r Repository) *Service {
 	return &Service{
 		r: r,
 	}

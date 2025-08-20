@@ -91,7 +91,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to load repository: %v", err)
 	}
-	service := service.NewService(repository)
+	service := service.New(repository)
 
 	resolver := graph.NewResolver(service)
 	directive := graph.NewDirective()
