@@ -4,10 +4,12 @@ directive @isAuthenticated on FIELD_DEFINITION
 
 scalar DateTime
 
+scalar UUID
+
 scalar URI
 
 interface Node {
-  id: ID!
+  id: UUID!
 }
 
 type PageInfo {
@@ -18,7 +20,7 @@ type PageInfo {
 }
 
 type Repository implements Node {
-  id: ID!
+  id: UUID!
   owner: User!
   name: String!
   createdAt: DateTime!
@@ -43,7 +45,7 @@ type Repository implements Node {
 }
 
 type User implements Node {
-  id: ID!
+  id: UUID!
   name: String!
   projectV2(
     number: Int!
@@ -57,7 +59,7 @@ type User implements Node {
 }
 
 type Issue implements Node {
-  id: ID!
+  id: UUID!
   url: URI!
   title: String!
   closed: Boolean!
@@ -85,7 +87,7 @@ type IssueEdge {
 }
 
 type PullRequest implements Node {
-  id: ID!
+  id: UUID!
   baseRefName: String!
   closed: Boolean!
   headRefName: String!
@@ -113,7 +115,7 @@ type PullRequestEdge {
 }
 
 type ProjectV2 implements Node {
-  id: ID!
+  id: UUID!
   title: String!
   url: URI!
   number: Int!
@@ -141,7 +143,7 @@ type ProjectV2Edge {
 union ProjectV2ItemContent = Issue | PullRequest
 
 type ProjectV2Item implements Node {
-  id: ID!
+  id: UUID!
   project: ProjectV2!
   content: ProjectV2ItemContent
 }
@@ -169,14 +171,14 @@ type Query {
   ): User @isAuthenticated
 
   node(
-    id: ID!
+    id: UUID!
   ): Node
 
 }
 
 input AddProjectV2ItemByIdInput {
-  contentId: ID!
-  projectId: ID!
+  contentId: UUID!
+  projectId: UUID!
 }
 
 type AddProjectV2ItemByIdPayload {
